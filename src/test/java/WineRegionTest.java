@@ -39,6 +39,7 @@ public class WineRegionTest {
     try (Driver driver = GraphDatabase.driver(neo4j.boltURI(), Config.build().withoutEncryption().toConfig())) {
       String nonExistingRegionName = "Tokaj";
       WineRegion region = new Neo4jWineRegion(driver, nonExistingRegionName);
+      System.out.println(region.toString());
     }
   }
 

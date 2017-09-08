@@ -9,6 +9,7 @@ public class WineRegionService {
     }
 
     public WineRegion wineRegionByName(String regionName) {
-      return new ConstWineRegions(db).getByName(regionName);
+      WineRegion region = new Neo4jWineRegion(db, regionName);
+      return region;
     }
 }
