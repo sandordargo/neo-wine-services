@@ -8,12 +8,9 @@ import org.neo4j.harness.junit.Neo4jRule;
 import static org.junit.Assert.assertEquals;
 
 public class WineRegionServiceTest {
-  
+
   @Rule
-  public Neo4jRule neo4j = new Neo4jRule()
-      .withFixture("CREATE (eger:WineRegion {name:'Eger'})-[:CONTAINS]->(egerSR:WineSubRegion {name:'Eger'}),"
-                       + "(eger)-[:CONTAINS]->(matra:WineSubRegion {name:'Mátra'}),"
-                       + "(eger)-[:CONTAINS]->(bukk:WineSubRegion {name:'Bükk'})");
+  public Neo4jRule neo4j = new Neo4jRule().withFixture(FakeData.FAKE_DATA_CREATOR);
   
   @Test
   public void shouldReturnExistingRegion() {

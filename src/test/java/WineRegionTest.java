@@ -15,10 +15,7 @@ import static org.junit.Assert.assertTrue;
 public class WineRegionTest {
 
   @Rule
-  public Neo4jRule neo4j = new Neo4jRule()
-      .withFixture("CREATE (eger:WineRegion {name:'Eger'})-[:CONTAINS]->(egerSR:WineSubRegion {name:'Eger'}),"
-                       + "(eger)-[:CONTAINS]->(matra:WineSubRegion {name:'Mátra'}),"
-                       + "(eger)-[:CONTAINS]->(bukk:WineSubRegion {name:'Bükk'})");
+  public Neo4jRule neo4j = new Neo4jRule().withFixture(FakeData.FAKE_DATA_CREATOR);
 
   @Test
   public void shouldReturnExistingRegion() {
