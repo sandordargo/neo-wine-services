@@ -1,3 +1,6 @@
+import java.util.Arrays;
+import java.util.List;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.neo4j.driver.v1.Config;
@@ -7,6 +10,7 @@ import org.neo4j.driver.v1.exceptions.NoSuchRecordException;
 import org.neo4j.harness.junit.Neo4jRule;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class WineRegionTest {
 
@@ -29,8 +33,10 @@ public class WineRegionTest {
   public void shouldFindSubRegions() {
     try (Driver driver = GraphDatabase.driver(neo4j.boltURI(), Config.build().withoutEncryption().toConfig())) {
       String existingRegionName = "Eger";
+      List<String> expectedSubregions = Arrays.asList("Eger", "Mátra", "Bükk");
       WineRegion region = new Neo4jWineRegion(driver, existingRegionName);
-      assertEquals(3, region.getContainedSubregions().size());
+      assertTrue(expectedSubregions.containsAll(region.getContainedSubregions())
+                 && region.getContainedSubregions().containsAll(expectedSubregions));
     }
   }
 
