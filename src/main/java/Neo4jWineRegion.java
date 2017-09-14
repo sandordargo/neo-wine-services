@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.neo4j.driver.internal.InternalNode;
 import org.neo4j.driver.v1.Driver;
@@ -15,7 +16,7 @@ import org.neo4j.driver.v1.StatementResult;
 public class Neo4jWineRegion implements WineRegion {
   private final Driver db;
   private String name;
-  private Set<String> subregions;
+  private Set<WineSubregion> subregions;
   private long id;
 
 
@@ -41,9 +42,11 @@ public class Neo4jWineRegion implements WineRegion {
   }
 
   private void collectSubregions(StatementResult result, Record record) {
-    subregions.add(((InternalNode) record.get(1).asObject()).asMap().get("name").toString());
+    String subregionName = ((InternalNode) record.get(1).asObject()).asMap().get("name").toString();
+    subregions.add(new Neo4jWineSubregion(db, subregionName));
     while (result.hasNext()) {
-      subregions.add(((InternalNode) result.next().get(1).asObject()).asMap().get("name").toString());
+      subregionName = ((InternalNode) result.next().get(1).asObject()).asMap().get("name").toString();
+      subregions.add(new Neo4jWineSubregion(db, subregionName));
     }
   }
 
@@ -55,13 +58,14 @@ public class Neo4jWineRegion implements WineRegion {
     return this.name;
   }
 
-  @Override public Set<String> getContainedSubregions() {
+  @Override public Set<WineSubregion> getContainedSubregions() {
     return subregions;
   }
 
   @Override
   public String toString() {
-    List<String> sortedSubRegions = new ArrayList<>(getContainedSubregions());
+    List<String> sortedSubRegions = new ArrayList<>(getContainedSubregions().stream().map(subregion -> subregion.getName()).collect(
+        Collectors.toList()));
     Collections.sort(sortedSubRegions);
     return "[name: " + this.getName() + ", id: " + this.getId() + ", subregions: " +  sortedSubRegions.toString() + "]";
   }

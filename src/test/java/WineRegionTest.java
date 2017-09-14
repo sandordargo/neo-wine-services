@@ -1,5 +1,7 @@
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -32,8 +34,8 @@ public class WineRegionTest {
       String existingRegionName = "Eger";
       List<String> expectedSubregions = Arrays.asList("Eger", "Mátra", "Bükk");
       WineRegion region = new Neo4jWineRegion(driver, existingRegionName);
-      assertTrue(expectedSubregions.containsAll(region.getContainedSubregions())
-                 && region.getContainedSubregions().containsAll(expectedSubregions));
+      assertTrue(expectedSubregions.containsAll(subregionsAsSetOfStringOfTheirNames(region.getContainedSubregions()))
+          && subregionsAsSetOfStringOfTheirNames(region.getContainedSubregions()).containsAll(expectedSubregions));
     }
   }
 
@@ -53,5 +55,9 @@ public class WineRegionTest {
       WineRegion region = new Neo4jWineRegion(driver, "Eger");
       assertEquals(expectedRegionDescription, region.toString());
     }
+  }
+
+  private Set<String> subregionsAsSetOfStringOfTheirNames(Set<WineSubregion> wineSubregions) {
+    return wineSubregions.stream().map(subregion -> subregion.getName()).collect(Collectors.toSet());
   }
 }

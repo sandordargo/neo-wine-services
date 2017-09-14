@@ -18,6 +18,7 @@ public class Neo4jWineSubregion implements WineSubregion {
   private String name;
   private Set<String> grapes;
   private WineRegion parentRegion;
+  private String parentRegionName;
   private long id;
 
   public Neo4jWineSubregion(Driver db, String name) {
@@ -35,7 +36,7 @@ public class Neo4jWineSubregion implements WineSubregion {
       StatementResult result = session.run(query, parameters);
       Record record = result.next();
       InternalNode region = (InternalNode) record.get(0).asObject();
-      this.parentRegion = new Neo4jWineRegion(db, region.asMap().get("name").toString());
+      this.parentRegionName = region.asMap().get("name").toString();
       InternalNode subregion = (InternalNode) record.get(1).asObject();
       this.name = subregion.asMap().get("name").toString();
       this.id = subregion.id();
@@ -69,6 +70,9 @@ public class Neo4jWineSubregion implements WineSubregion {
 
   @Override
   public WineRegion getIncludingRegion() {
+    if (this.parentRegion == null) {
+      this.parentRegion = new Neo4jWineRegion(this.db, this.parentRegionName);
+    }
     return this.parentRegion;
   }
 

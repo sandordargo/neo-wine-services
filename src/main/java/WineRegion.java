@@ -6,6 +6,6 @@ public interface WineRegion {
 
   String getName();
 
-  Set<String> getContainedSubregions();
+  Set<WineSubregion> getContainedSubregions();
   
 }
