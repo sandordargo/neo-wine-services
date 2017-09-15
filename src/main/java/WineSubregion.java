@@ -5,7 +5,7 @@ public interface WineSubregion {
 
   String getName();
 
-  Set<String> getGrapesGrownAt();
+  Set<Grape> getGrapesGrownAt();
 
   WineRegion getIncludingRegion();
 

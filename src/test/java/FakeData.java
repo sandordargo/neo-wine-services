@@ -5,5 +5,6 @@ public class FakeData {
         + "(eger)-[:CONTAINS]->(bukk:WineSubRegion {name:'Bükk'}),"
         + "(eger_subregion)<-[:GROWS_AT]-(merlot:Grape {name:'Merlot'}),"
         + "(eger_subregion)<-[:GROWS_AT]-(pinot_noir:Grape {name:'Pinot Noir'}),"
-        + "(eger_subregion)<-[:GROWS_AT]-(cabernet_franc:Grape {name:'Cabernet Franc'})";
+        + "(bukk)<-[:GROWS_AT]-(cabernet_franc:Grape {name:'Cabernet Franc'}),"
+        + "(eger_subregion)<-[:GROWS_AT]-(cabernet_franc)";
 }

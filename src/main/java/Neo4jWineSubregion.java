@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.neo4j.driver.internal.InternalNode;
 import org.neo4j.driver.v1.Driver;
@@ -16,7 +17,7 @@ public class Neo4jWineSubregion implements WineSubregion {
   
   private final Driver db;
   private String name;
-  private Set<String> grapes;
+  private Set<Grape> grapes;
   private WineRegion parentRegion;
   private String parentRegionName;
   private long id;
@@ -46,9 +47,11 @@ public class Neo4jWineSubregion implements WineSubregion {
 
   private void collectGrapes(StatementResult result, Record record) {
     if (record.get(2).asObject() != null) {
-      grapes.add(((InternalNode) record.get(2).asObject()).asMap().get("name").toString());
+      String grapeName = ((InternalNode) record.get(2).asObject()).asMap().get("name").toString();
+      grapes.add(new Neo4jGrape(this.db, grapeName));
       while (result.hasNext()) {
-        grapes.add(((InternalNode) result.next().get(2).asObject()).asMap().get("name").toString());
+        grapeName = ((InternalNode) result.next().get(2).asObject()).asMap().get("name").toString();
+        grapes.add(new Neo4jGrape(this.db, grapeName));
       }
     }
   }
@@ -64,7 +67,7 @@ public class Neo4jWineSubregion implements WineSubregion {
   }
 
   @Override
-  public Set<String> getGrapesGrownAt() {
+  public Set<Grape> getGrapesGrownAt() {
     return this.grapes;
   }
 
@@ -78,7 +81,9 @@ public class Neo4jWineSubregion implements WineSubregion {
 
   @Override
   public String toString() {
-    List<String> sortedGrapes = new ArrayList<>(getGrapesGrownAt());
+    List<String> sortedGrapes = new ArrayList<>(getGrapesGrownAt().stream()
+                                                                  .map(Grape::getName)
+                                                                  .collect(Collectors.toList()));
     Collections.sort(sortedGrapes);
     return "[name: " + this.getName() + ", id: " + this.getId() + ", including region: "
         + getIncludingRegion().getName() + ", grapes: " +  sortedGrapes.toString() + "]";
