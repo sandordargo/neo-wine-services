@@ -11,6 +11,10 @@ import org.neo4j.driver.v1.GraphDatabase;
 import org.neo4j.driver.v1.exceptions.NoSuchRecordException;
 import org.neo4j.harness.junit.Neo4jRule;
 
+import neowine.Grape;
+import neowine.Neo4jGrape;
+import neowine.WineSubregion;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 

@@ -1,3 +1,5 @@
+package neowine;
+
 import java.util.Set;
 
 public interface Grape {

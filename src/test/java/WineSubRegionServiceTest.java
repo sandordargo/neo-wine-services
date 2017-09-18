@@ -5,6 +5,8 @@ import org.neo4j.driver.v1.Driver;
 import org.neo4j.driver.v1.GraphDatabase;
 import org.neo4j.harness.junit.Neo4jRule;
 
+import neowine.WineSubregionService;
+
 import static org.junit.Assert.assertEquals;
 
 public class WineSubRegionServiceTest {
