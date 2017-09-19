@@ -15,6 +15,8 @@ import org.neo4j.driver.v1.Record;
 import org.neo4j.driver.v1.Session;
 import org.neo4j.driver.v1.StatementResult;
 
+import neowine.resources.GrapePojo;
+
 public class Neo4jGrape implements Grape {
 
   private final Driver db;
@@ -67,7 +69,6 @@ public class Neo4jGrape implements Grape {
   @Override public Set<WineSubregion> getProducingSubregions() {
     if (this.producingSubregions.isEmpty()) {
       for (String subregionName : this.producingSubregionNames) {
-        System.out.println(subregionName);
         this.producingSubregions.add(new Neo4jWineSubregion(this.db, subregionName));
       }
     }
@@ -83,5 +84,11 @@ public class Neo4jGrape implements Grape {
     Collections.sort(sortedSubregions);
     return "[name: " + this.getName() + ", id: " + this.getId() + ", producing subregions: "
         + sortedSubregions.toString() + "]";
+  }
+
+  @Override
+  public GrapePojo asPojo() {
+    return new GrapePojo(this.getId(), this.getName(),
+                         this.getProducingSubregions().stream().map(WineSubregion::getName).collect(Collectors.toSet()));
   }
 }

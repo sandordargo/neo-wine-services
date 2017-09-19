@@ -9,7 +9,7 @@ public class GrapeService {
     this.db = db;
   }
 
-  public Grape grapeByName(String grapeName) {
+  public Grape getGrapeByName(String grapeName) {
     Grape grape = new Neo4jGrape(db, grapeName);
     return grape;
   }

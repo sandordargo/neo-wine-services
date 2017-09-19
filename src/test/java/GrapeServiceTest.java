@@ -19,7 +19,7 @@ public class GrapeServiceTest {
     try (Driver driver = GraphDatabase.driver(neo4j.boltURI(), Config.build().withoutEncryption().toConfig())) {
       String expectedGrapeName = "Merlot";
       GrapeService service = new GrapeService(driver);
-      assertEquals(expectedGrapeName, service.grapeByName(expectedGrapeName).getName());
+      assertEquals(expectedGrapeName, service.getGrapeByName(expectedGrapeName).getName());
     }
   }
 }

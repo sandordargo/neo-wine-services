@@ -2,6 +2,8 @@ package neowine;
 
 import java.util.Set;
 
+import neowine.resources.WineSubregionPojo;
+
 public interface WineSubregion {
   long getId();
 
@@ -10,5 +12,7 @@ public interface WineSubregion {
   Set<Grape> getGrapesGrownAt();
 
   WineRegion getIncludingRegion();
+
+  WineSubregionPojo asPojo();
 
 }

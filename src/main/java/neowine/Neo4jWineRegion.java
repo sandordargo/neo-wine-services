@@ -15,6 +15,8 @@ import org.neo4j.driver.v1.Record;
 import org.neo4j.driver.v1.Session;
 import org.neo4j.driver.v1.StatementResult;
 
+import neowine.resources.WineRegionPojo;
+
 public class Neo4jWineRegion implements WineRegion {
   private final Driver db;
   private String name;
@@ -62,6 +64,12 @@ public class Neo4jWineRegion implements WineRegion {
 
   @Override public Set<WineSubregion> getContainedSubregions() {
     return subregions;
+  }
+
+  @Override public WineRegionPojo asPojo() {
+    return new WineRegionPojo(this.getId(),
+                              this.getName(),
+                              getContainedSubregions().stream().map(WineSubregion::getName).collect(Collectors.toSet()));
   }
 
   @Override

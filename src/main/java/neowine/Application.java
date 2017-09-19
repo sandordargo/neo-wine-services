@@ -11,7 +11,21 @@ import org.springframework.context.annotation.Bean;
 public class Application {
 
     @Bean
-    public Driver getNeo4jDriver() {
+    public WineRegionService getWineRegionService() {
+      return new WineRegionService(getNeo4jDriver());
+    }
+
+    @Bean
+    public WineSubregionService getWineSubregionService() {
+      return new WineSubregionService(getNeo4jDriver());
+    }
+
+    @Bean
+    public GrapeService getGrapeService() {
+      return new GrapeService(getNeo4jDriver());
+    }
+
+    private Driver getNeo4jDriver() {
       return GraphDatabase.driver("bolt://localhost:7687", AuthTokens.basic("neo4j", "neo4j"));
     }
 
